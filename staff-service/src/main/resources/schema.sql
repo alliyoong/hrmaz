@@ -1,0 +1,19 @@
+-- USE staff_manager_db;
+-- SET FOREIGN_KEY_CHECKS = 0;
+
+-- CREATE TABLE IF NOT EXISTS staff (
+--     staff_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY, -- Numeric ID for staff member
+--     full_name VARCHAR(100) NOT NULL,
+--     email VARCHAR(100) NOT NULL UNIQUE,
+--     social_security_number VARCHAR(20) UNIQUE,
+--     phone_number VARCHAR(15) UNIQUE,
+--     gender ENUM('MALE', 'FEMALE') NOT NULL,
+--     date_of_birth DATE,
+--     join_date DATE,
+--     department_id INT UNSIGNED NOT NULL,
+--     job_position_id INT UNSIGNED,
+--     staff_status ENUM('ACTIVE', 'INACTIVE') DEFAULT 'ACTIVE',
+--     gross_salary DECIMAL(15,2) NOT NULL DEFAULT 0,
+--     FOREIGN KEY (department_id) REFERENCES department(department_id) ON DELETE RESTRICT,
+--     FOREIGN KEY (job_position_id) REFERENCES job_position(job_position_id) ON DELETE RESTRICT 
+-- );
