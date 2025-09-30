@@ -22,15 +22,28 @@ spring:
   sql:
     init:
       mode: never
-application:
-  name: department-service
-  title: department micro service
-  version: 1.0
-  url:
-    front-end: http://localhost:4200
-  upload:
-    day-off-document:
-      max-size: 2_097_152  #2MB
+  application:
+    name: department-service
+    cloud:
+      consul:
+        host: localhost
+        port: 8500
+        discovery:
+          register: true
+          enabled: true
+          health-check-path: /actuator/health
+          ip-address: host.docker.internal
+          health-check-port: 8082
+          health-check-interval: 10s
+          service-name: ${spring.application.name}
+          prefer-ip-address: true
+    title: department micro service
+    version: 1.0
+    url:
+      front-end: http://localhost:4200
+    upload:
+      day-off-document:
+        max-size: 2_097_152  #2MB
 
 server:
   port: 8082

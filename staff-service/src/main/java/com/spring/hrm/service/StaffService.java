@@ -6,6 +6,7 @@ import com.spring.hrm.entity.JobPosition;
 import com.spring.hrm.entity.Staff;
 import com.spring.hrm.entity.Staff.Gender;
 import com.spring.hrm.entity.Staff.StaffStatus;
+import com.spring.hrm.entity.dto.DepartmentDto;
 import com.spring.hrm.entity.dto.SearchStaffDto;
 import com.spring.hrm.entity.dto.StaffAddRequestDto;
 import com.spring.hrm.entity.dto.StaffDetailDto;
@@ -18,10 +19,13 @@ public interface StaffService {
     void deleteStaff(int id);
     void editStaff(int id, StaffAddRequestDto dto);
     List<Staff> searchStaff(SearchStaffDto phrase);
+    boolean isDepartmentEmpty(int departmentId);
     StaffDetailDto getDetail(int id);
     Staff saveToDb(Staff staff);
     List<StaffStatus> getStaffStatusList();
     List<Gender> getGenderList();
     List<JobPosition> getJobPositionList();
+    
+    // DepartmentDto getDepartmentDtoById(int id);
     
 }

@@ -9,7 +9,7 @@ import com.spring.hrm.entity.Staff;
 import com.spring.hrm.entity.dto.StaffAddRequestDto;
 import com.spring.hrm.entity.dto.StaffDetailDto;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {StaffMapperHelper.class} )
 public interface StaffMapper{
 
     StaffMapper INSTANCE = Mappers.getMapper(StaffMapper.class);
@@ -37,6 +37,8 @@ public interface StaffMapper{
     // StaffDetailDto fromAccount(Account account);
     
     @Mapping(source = "staff.id", target = "staffId")
+    @Mapping(source = "departmentId", target = "departmentDto")
+    @Mapping(source = "jobPositionId", target = "jobPosition")
     StaffDetailDto toStaffDetailDto(Staff staff);
 }
 

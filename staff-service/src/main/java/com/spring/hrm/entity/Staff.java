@@ -32,7 +32,7 @@ public class Staff {
     @Enumerated(EnumType.STRING)
     private StaffStatus staffStatus;
     private LocalDate joinDate;
-    private int accountId;
+    // private int accountId;
     private int jobPositionId;
 
     public enum Gender {

@@ -2,6 +2,7 @@ package com.spring.hrm.entity.dto;
 
 import java.time.LocalDate;
 
+import com.spring.hrm.entity.JobPosition;
 import com.spring.hrm.entity.Staff.Gender;
 import com.spring.hrm.entity.Staff.StaffStatus;
 
@@ -13,11 +14,11 @@ public record StaffDetailDto(
                 String phoneNumber,
                 String socialSecurityNumber,
                 LocalDate dateOfBirth,
-                int departmentId,
+                DepartmentDto departmentDto,
                 Gender gender,
                 StaffStatus staffStatus,
                 LocalDate joinDate,
-                int jobPositionId
+                JobPosition jobPosition
 
 ) {
 

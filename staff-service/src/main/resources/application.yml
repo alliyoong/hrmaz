@@ -29,7 +29,10 @@ spring:
         host: localhost
         port: 8500
         discovery:
+          register: true
+          enabled: true
           health-check-path: /actuator/health
+          health-check-port: 8081
           health-check-interval: 10s
           service-name: ${spring.application.name}
           prefer-ip-address: true
