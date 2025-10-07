@@ -31,7 +31,7 @@ public class StaffSpecifications {
     public static Specification<Staff> byDepartment(int id) {
         return (root, query, criteriaBuilder) -> {
             return id == 0 ? criteriaBuilder.conjunction()
-                    : criteriaBuilder.equal(root.get("department").get("departmentId"), id);
+                    : criteriaBuilder.equal(root.get("departmentId"), id);
         };
     }
 

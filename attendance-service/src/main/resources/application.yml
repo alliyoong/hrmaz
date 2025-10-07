@@ -24,18 +24,19 @@ spring:
       mode: never
   application:
     name: attendance-service
-    cloud:
-      consul:
-        host: localhost
-        port: 8500
-        discovery:
-          register: true
-          enabled: true
-          health-check-path: /actuator/health
-          health-check-port: 8083
-          health-check-interval: 10s
-          service-name: ${spring.application.name}
-          prefer-ip-address: true
+  cloud:
+    consul:
+      host: localhost
+      port: 8500
+      discovery:
+        # register: true
+        # enabled: true
+        health-check-path: /actuator/health
+        health-check-interval: 10s
+        health-check-url: http://host.docker.internal:8083/actuator/health
+        ip-address: localhost
+        service-name: ${spring.application.name}
+        prefer-ip-address: true
     title: attendance micro service
     version: 1.0
     url:

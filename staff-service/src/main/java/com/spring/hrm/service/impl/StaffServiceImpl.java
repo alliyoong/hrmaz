@@ -114,11 +114,10 @@ public class StaffServiceImpl implements StaffService {
         throw new RuntimeException();
     }
 
-    // @Override
-    // public Staff findById(int id) {
-    //     return staffRepository.findById(id)
-    //             .orElseThrow(() -> new RuntimeException());
-    // }
+    @Override
+    public boolean isStaffExisted(int id) {
+        return staffRepository.findById(id).isEmpty();
+    }
 
     @Override
     public List<StaffStatus> getStaffStatusList() {
@@ -144,6 +143,7 @@ public class StaffServiceImpl implements StaffService {
     public boolean isDepartmentEmpty(int departmentId) {
         return staffRepository.findByDepartmentId(departmentId).isEmpty();
     }
+
 
     // @Override
     // public DepartmentDto getDepartmentDtoById(int id){

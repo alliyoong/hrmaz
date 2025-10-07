@@ -9,6 +9,6 @@ import com.spring.hrm.utilities.HttpResponse;
 
 @FeignClient(name = "department-service")
 public interface DepartmentClient {
-    @GetMapping("/api/department/{departmentId}")
+    @GetMapping("/{departmentId}")
     HttpResponse<DepartmentDto> findDepartmentById(@PathVariable int departmentId);
 }

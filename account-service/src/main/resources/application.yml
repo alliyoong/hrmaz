@@ -1,0 +1,83 @@
+spring:
+  data:
+    redis:
+      host: localhost
+      port: 6379
+  datasource:
+    url: jdbc:mysql://localhost:3306/staff_manager_db
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    database-platform: org.hibernate.dialect.MySQLDialect
+    properties:
+      hibernate:
+        format_sql: true
+  web:
+    resources:
+      add-mappings: false
+  output:
+    ansi:
+      enabled: ALWAYS
+  sql:
+    init:
+      mode: never
+  application:
+    name: account-service
+  cloud:
+    consul:
+      host: localhost
+      port: 8500
+      discovery:
+        # register: true
+        # enabled: true
+        health-check-path: /actuator/health
+        health-check-interval: 10s
+        health-check-url: http://host.docker.internal:8084/actuator/health
+        service-name: ${spring.application.name}
+        ip-address: localhost
+        prefer-ip-address: true
+    title: account micro service
+    version: 1.0
+    url:
+      front-end: http://localhost:4200
+    upload:
+      day-off-document:
+        max-size: 2_097_152  #2MB
+
+server:
+  port: 8084
+  error:
+    path: /error
+#  error:
+#    whitelabel:
+#      enabled: false
+
+logging:
+  level:
+    org:
+      # springframework:
+      #   orm: 
+      #     jpa: DEBUG
+      # hibernate: DEBUG
+        # orm:
+        #   jdbc:
+        #     bind: TRACE
+        # SQL: DEBUG
+    root: INFO
+
+management:
+  endpoint:
+    startup:
+      access: unrestricted
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+

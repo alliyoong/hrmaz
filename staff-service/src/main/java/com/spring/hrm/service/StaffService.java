@@ -20,6 +20,7 @@ public interface StaffService {
     void editStaff(int id, StaffAddRequestDto dto);
     List<Staff> searchStaff(SearchStaffDto phrase);
     boolean isDepartmentEmpty(int departmentId);
+    boolean isStaffExisted(int id);
     StaffDetailDto getDetail(int id);
     Staff saveToDb(Staff staff);
     List<StaffStatus> getStaffStatusList();

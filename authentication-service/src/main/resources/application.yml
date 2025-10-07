@@ -1,0 +1,57 @@
+spring:
+  data:
+    redis:
+      host: localhost
+      port: 6379
+  datasource:
+    url: jdbc:mysql://localhost:3306/staff_manager_db
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  output:
+    ansi:
+      enabled: ALWAYS
+  application:
+    name: authentication-service
+  cloud:
+    consul:
+      host: localhost
+      port: 8500
+      discovery:
+        # register: true
+        # enabled: true
+        health-check-path: /actuator/health
+        health-check-interval: 10s
+        health-check-url: http://host.docker.internal:8085/actuator/health
+        service-name: ${spring.application.name}
+        ip-address: localhost
+        prefer-ip-address: true
+
+management:
+  endpoint:
+    startup:
+      access: unrestricted
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+server:
+  port: 8085
+  # error:
+    # path: /error
+
+security:
+  jwt:
+    secret: Ns6SpnvuJgwRCli/WbFpCIPhBkhjBTYxE4VORK/dxRQ=
+    access-token-lifetime-milliseconds: 300_000
+    issuer: hrm-system
+    audience: hrm-audience
+logging:
+  level:
+    org:
+      springframework:
+        web: DEBUG
+        security: DEBUG
+    

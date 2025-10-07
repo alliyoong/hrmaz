@@ -9,6 +9,6 @@ import com.spring.hrm.utilities.HttpResponse;
 @FeignClient(name = "staff-service")
 public interface StaffClient {
     
-    @GetMapping("/api/staff/exist/department/{departmentId}")
+    @GetMapping("/exist/department/{departmentId}")
     HttpResponse isDepartmentEmpty(@PathVariable("departmentId") int departmentId);
 }

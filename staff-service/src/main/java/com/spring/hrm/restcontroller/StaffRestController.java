@@ -2,6 +2,7 @@ package com.spring.hrm.restcontroller;
 
 import java.util.List;
 
+import org.springframework.boot.actuate.autoconfigure.observation.ObservationProperties.Http;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,7 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @Slf4j
-@RequestMapping("/api/staff")
+// @RequestMapping("/api/staff")
 @RequiredArgsConstructor
 @Validated
 @CrossOrigin(origins = "http://localhost:4200")
@@ -38,13 +40,23 @@ public class StaffRestController {
         return HttpResponse.ok(data);
     }
     
+    @GetMapping("/me")
+    public HttpResponse<Staff> getMyProfile(@RequestHeader("x-staff-id") String staffId) {
+        log.info("Request from gateway with staffId: {}", staffId);
+        return HttpResponse.noContent();
+    }
+    
     @GetMapping("/exist/department/{departmentId}")
     public HttpResponse isDepartmentEmpty(@PathVariable int departmentId) {
         var result = service.isDepartmentEmpty(departmentId);
         return HttpResponse.ok(result);
     }
     
-
+    @GetMapping("/exist/attendance/{staffId}")
+    public HttpResponse isStaffExisted(@PathVariable int staffId) {
+        var result = service.isStaffExisted(staffId);
+        return HttpResponse.ok(result);
+    }
 
     @PostMapping("/search")
     public HttpResponse getPage(@RequestBody SearchStaffDto search) {

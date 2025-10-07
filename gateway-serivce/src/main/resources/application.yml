@@ -2,16 +2,105 @@ server:
   port: 8080
 
 spring:
+  data:
+    redis:
+      host: localhost
+      port: 6379
   application:
     name: gateway-service
+  output:
+    ansi:
+      enabled: ALWAYS
   cloud:
     consul:
       host: localhost
       port: 8500
       discovery:
+        health-check-path: /actuator/health
+        ip-address: host.docker.internal
+        health-check-interval: 10s
         prefer-ip-address: true
+        service-name: ${spring.application.name}
     gateway:
-      discovery:
-        locator:
-          enabled: true # automatically map service names to routes
-          lower-case-service-id: true
+      default-filters:
+      - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+      - name: RequestRateLimiter
+        args:
+          key-resolver: '#{@ipKeyResolver}'
+          redis-rate-limiter:
+            replenishRate: 2
+            burstCapacity: 10
+            requestedTokens: 1
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOriginPatterns: 'http://localhost:4200'
+            allowedMethods: 'GET, POST, PUT, DELETE, OPTIONS'
+            allowedHeaders: '*'
+            exposed-headers:
+            - Authorization
+            - Set-Cookie
+            allowCredentials: true
+      # server:
+        # webflux:
+      routes:
+        - id: authentication-service
+          uri: lb://authentication-service
+          predicates:
+            - Host=auth.localhost:8080
+            - Path=/api/auth/**
+          filters:
+            - StripPrefix=2
+          # metadata:
+          #   cors:
+          #     allowedOriginPatterns: "http://localhost:4200"
+          #     allowedMethods: "GET, POST, PUT, DELETE, OPTIONS"
+          #     allowedHeaders: "*"
+          #     exposeHeaders: "Authorization, Set-Cookie"
+          #     allowCredentials: true
+
+        - id: staff-service
+          uri: lb://staff-service
+          predicates:
+            - Host=staff.localhost:8080
+            - Path=/api/staff/**
+          filters:
+            - StripPrefix=2
+
+        - id: department-service
+          uri: lb://department-service
+          predicates:
+            - Host=department.localhost:8080
+            - Path=/api/department/**
+          filters:
+            - StripPrefix=2
+
+        - id: attendance-service
+          uri: lb://attendance-service
+          predicates:
+            - Host=attendance.localhost:8080
+            - Path=/api/attendance/**
+          filters:
+            - StripPrefix=2
+
+        - id: account-service
+          uri: lb://account-service
+          predicates:
+            - Host=account.localhost:8080
+            - Path=/api/account/**
+          filters:
+            - StripPrefix=2
+
+logging:
+  level:
+    org: 
+      springframework:
+        cloud:
+          gateway: DEBUG
+
+security:
+  jwt:
+    secret: Ns6SpnvuJgwRCli/WbFpCIPhBkhjBTYxE4VORK/dxRQ=
+    access-token-lifetime-milliseconds: 300_000
+    issuer: hrm-system
+    audience: hrm-audience

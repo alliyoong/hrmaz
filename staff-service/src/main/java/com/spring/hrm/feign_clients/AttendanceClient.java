@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 @FeignClient(name = "attendance-service")
 public interface AttendanceClient {
 
-    @DeleteMapping("/api/attendances/staff/{staffId}")
+    @DeleteMapping("/staff/{staffId}")
     void deleteAttendanceByStaff(@PathVariable("staffId") int staffId);
 }
