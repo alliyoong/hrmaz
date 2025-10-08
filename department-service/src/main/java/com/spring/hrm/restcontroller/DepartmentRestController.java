@@ -1,7 +1,6 @@
 package com.spring.hrm.restcontroller;
 
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,7 +22,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 // @RequestMapping("/api/department")
-@CrossOrigin(origins = "*")
 // @Validated
 public class DepartmentRestController {
     private final DepartmentService service;
