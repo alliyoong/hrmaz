@@ -23,6 +23,7 @@ public interface StaffService {
     boolean isStaffExisted(int id);
     StaffDetailDto getDetail(int id);
     Staff saveToDb(Staff staff);
+    Staff findById(int id);
     List<StaffStatus> getStaffStatusList();
     List<Gender> getGenderList();
     List<JobPosition> getJobPositionList();

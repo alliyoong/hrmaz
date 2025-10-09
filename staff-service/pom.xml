@@ -27,6 +27,11 @@
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-openfeign</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>io.awspring.cloud</groupId>
+			<artifactId>spring-cloud-aws-starter-sqs</artifactId>
+			<version>3.4.0</version>
+		</dependency>
 		<!-- order of lombok dependency and mapstruct dependency is important -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>

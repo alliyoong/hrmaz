@@ -56,15 +56,23 @@ public class StaffRestController {
     }
 
     @PostMapping("/search")
-    public HttpResponse getPage(@RequestBody SearchStaffDto search) {
+    public HttpResponse getPage(
+        @RequestBody SearchStaffDto search, 
+        @RequestHeader("X-User-Id") String userId,
+        @RequestHeader("X-User-Roles") String roles,
+        @RequestHeader("X-User-Name") String name
+        ) {
         log.info("search criteria: {}", search.toString());
+        log.info("Request from gateway with userId: {}", userId);
+        log.info("Request from gateway with username: {}", name);
+        log.info("Request from gateway with roles: {}", roles);
         var result = service.getPage(search);
         return HttpResponse.ok(result);
     }
 
-    @GetMapping("/detail/{id}")
-    public HttpResponse getDetail(@PathVariable("id") int id) {
-        var result = service.getDetail(id);
+    @GetMapping("/{id}")
+    public HttpResponse<Staff> getDetail(@PathVariable("id") int id) {
+        var result = service.findById(id);
         return HttpResponse.ok(result);
     }
 

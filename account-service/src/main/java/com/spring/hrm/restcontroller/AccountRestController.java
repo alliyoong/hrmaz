@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController
-// @RequestMapping("/api/account")
 @RequiredArgsConstructor
 @Slf4j
 public class AccountRestController {
@@ -43,7 +42,6 @@ public class AccountRestController {
         var result = service.findById(id);
         return HttpResponse.ok(result);
     }
-    
 
     @GetMapping("/status")
     public HttpResponse getStatusList() {

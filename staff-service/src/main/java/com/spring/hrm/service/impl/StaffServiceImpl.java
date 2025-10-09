@@ -118,6 +118,11 @@ public class StaffServiceImpl implements StaffService {
     public boolean isStaffExisted(int id) {
         return staffRepository.findById(id).isEmpty();
     }
+    
+    @Override
+    public Staff findById(int id) {
+        return staffRepository.findById(id).orElse(null);
+    }
 
     @Override
     public List<StaffStatus> getStaffStatusList() {

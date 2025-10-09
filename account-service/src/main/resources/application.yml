@@ -8,6 +8,7 @@ spring:
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
+
   jpa:
     open-in-view: false
     hibernate:
@@ -17,18 +18,31 @@ spring:
     properties:
       hibernate:
         format_sql: true
+
   web:
     resources:
       add-mappings: false
   output:
     ansi:
       enabled: ALWAYS
+
   sql:
     init:
       mode: never
   application:
     name: account-service
+
   cloud:
+
+    aws:
+      region: 
+        static: us-east-1
+      sqs:
+        endpoint: http://localhost:4566
+      credentials:
+        access-key: test
+        secret-key: test
+
     consul:
       host: localhost
       port: 8500
@@ -41,6 +55,7 @@ spring:
         service-name: ${spring.application.name}
         ip-address: localhost
         prefer-ip-address: true
+
     title: account micro service
     version: 1.0
     url:
@@ -81,3 +96,18 @@ management:
       exposure:
         include: '*'
 
+keycloak:
+  server-url: http://localhost:8088/
+  hrmaz-realm: hrmaz-realm
+  master-realm: master
+  client-id: admin-cli
+  username: admin
+  password: admin
+
+aws:
+  region: us-east-1
+  sqs:
+    endpoint: http://localhost:4566
+  creadentials:
+    access-key: test
+    secret-key: test
