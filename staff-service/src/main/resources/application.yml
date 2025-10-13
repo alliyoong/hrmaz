@@ -97,6 +97,25 @@ management:
       exposure:
         include: '*'
 
+  tracing:
+    enabled: true
+  otlp:
+    tracing:
+      endpoint: http://localhost:4317
+      export:
+        enabled: true
+  metrics:
+    export:
+      otlp:
+        enabled: true
+        endpoint: http://localhost:4317
+
+otel:
+  resource:
+    attributes:
+      service:
+        name: staff-service
+
 security:
   jwt:
     secret: Ns6SpnvuJgwRCli/WbFpCIPhBkhjBTYxE4VORK/dxRQ=

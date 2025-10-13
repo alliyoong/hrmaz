@@ -33,6 +33,7 @@ public class Staff {
     private StaffStatus staffStatus;
     private LocalDate joinDate;
     // private int accountId;
+    private String keycloakUserId;
     private int jobPositionId;
 
     public enum Gender {

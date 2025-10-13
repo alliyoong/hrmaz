@@ -7,16 +7,28 @@ import jakarta.validation.constraints.NotNull;
 
 
 public record RegisterRequestDto(
-    @NotBlank
+    @NotBlank(groups = {OnUpdate.class, OnCreate.class})
     String username, 
 
-    @NotBlank
+    @NotBlank(groups = OnCreate.class)
     String password,
 
-    @NotNull
+    @NotBlank(groups = {OnUpdate.class, OnCreate.class})
+    String firstName,
+
+    @NotBlank(groups = {OnUpdate.class, OnCreate.class})
+    String lastName,
+
+    @NotBlank(groups = {OnUpdate.class, OnCreate.class})
+    String email,
+
+    @NotNull(groups = {OnUpdate.class, OnCreate.class})
     AccountStatus accountStatus,
 
-    @NotNull
+    @NotNull(groups = {OnCreate.class})
     int staffId
 
-) {}
+) {
+    public interface OnUpdate{}
+    public interface OnCreate{}
+}

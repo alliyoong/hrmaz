@@ -12,4 +12,7 @@ public interface StaffClient {
     
     @GetMapping("/{staffId}")
     HttpResponse<StaffDto> getStaffById(@PathVariable("staffId") int staffId);
+    
+    @GetMapping("/find-keycloak-user/{staffId}")
+    String getKeycloakUserId(@PathVariable("staffId") int staffId);
 }

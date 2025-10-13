@@ -1,4 +1,4 @@
-package com.spring.hrm.configuration;
+package com.spring.hrm.config;
 
 import java.net.URI;
 
@@ -11,17 +11,16 @@ import software.amazon.awssdk.services.sqs.SqsClient;
 
 @Configuration
 public class SqsConfig {
+
     @Bean
     public SqsClient sqsClient() {
         return SqsClient.builder()
-            .endpointOverride(URI.create("http://localhost:4566")) // LocalStack endpoint
-            .region(Region.US_EAST_1) // Set your desired region
-            .credentialsProvider(
-                StaticCredentialsProvider.create(
-                    AwsBasicCredentials.create("test", "test")
-                )
-            )
-        .build();
+                .endpointOverride(URI.create("http://localhost:4566")) // LocalStack endpoint
+                .region(Region.US_EAST_1) // Set your desired region
+                .credentialsProvider(
+                        StaticCredentialsProvider.create(
+                                AwsBasicCredentials.create("test", "test")))
+                .build();
     }
 
 }

@@ -120,6 +120,13 @@ public class StaffServiceImpl implements StaffService {
     }
     
     @Override
+    public String getKeycloakUserId(int staffId) {
+        return staffRepository.findById(staffId)
+                .map(Staff::getKeycloakUserId)
+                .orElse(null);
+    }
+    
+    @Override
     public Staff findById(int id) {
         return staffRepository.findById(id).orElse(null);
     }
@@ -149,13 +156,4 @@ public class StaffServiceImpl implements StaffService {
         return staffRepository.findByDepartmentId(departmentId).isEmpty();
     }
 
-
-    // @Override
-    // public DepartmentDto getDepartmentDtoById(int id){
-    //     var result = departmentClient.findDepartmentById(id);
-    //     if(Objects.isNull(result)){
-    //         return new DepartmentDto();
-    //     }
-    //     return result;
-    // }
 }

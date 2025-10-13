@@ -1,10 +1,11 @@
 package com.spring.hrm.service;
 
+import java.security.Key;
 import java.util.List;
 
 import com.spring.hrm.entity.Account;
 import com.spring.hrm.entity.Account.AccountStatus;
-import com.spring.hrm.entity.dto.AccountViewDto;
+import com.spring.hrm.entity.dto.KeyCloakUserDto;
 import com.spring.hrm.entity.dto.RegisterRequestDto;
 
 public interface AccountService {
@@ -12,8 +13,8 @@ public interface AccountService {
     Account findById(int accountId);
     void saveToDb(RegisterRequestDto account);
     Account findWithStaff(String username);
-    void editAccount(int id, RegisterRequestDto data);
+    void editAccount(String id, RegisterRequestDto data);
     List<AccountStatus> getAccountStatusList();
-    AccountViewDto findAccountByStaffId(int id);
+    KeyCloakUserDto findAccountByStaffId(int id);
 
 }

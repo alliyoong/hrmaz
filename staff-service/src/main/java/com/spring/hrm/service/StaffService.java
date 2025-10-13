@@ -24,6 +24,7 @@ public interface StaffService {
     StaffDetailDto getDetail(int id);
     Staff saveToDb(Staff staff);
     Staff findById(int id);
+    String getKeycloakUserId(int staffId);
     List<StaffStatus> getStaffStatusList();
     List<Gender> getGenderList();
     List<JobPosition> getJobPositionList();

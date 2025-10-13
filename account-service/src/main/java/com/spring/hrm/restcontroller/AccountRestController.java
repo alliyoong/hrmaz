@@ -1,5 +1,7 @@
 package com.spring.hrm.restcontroller;
 
+import java.security.Key;
+
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,7 +11,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.spring.hrm.entity.dto.KeyCloakUserDto;
 import com.spring.hrm.entity.dto.RegisterRequestDto;
+import com.spring.hrm.entity.dto.RegisterRequestDto.OnUpdate;
 import com.spring.hrm.service.AccountService;
 import com.spring.hrm.utilities.HttpResponse;
 
@@ -32,8 +36,8 @@ public class AccountRestController {
     }
 
     @PutMapping(path = "/{id}")
-    public HttpResponse edit(@PathVariable("id") int id,
-            @Validated @RequestBody RegisterRequestDto data) {
+    public HttpResponse edit(@PathVariable("id") String id,
+            @Validated(OnUpdate.class) @RequestBody RegisterRequestDto data) {
         service.editAccount(id, data);
         return HttpResponse.created();
     }
@@ -55,10 +59,17 @@ public class AccountRestController {
         return HttpResponse.ok(result);
     }
 
+    // @GetMapping("/check-has-account/{staffId}")
+    // public HttpResponse checkHasAccount(@PathVariable int staffId) {
+    //     var result = service.findAccountByStaffId(staffId);
+    //     return HttpResponse.ok(result);
+    // }
+    
     @GetMapping("/check-has-account/{staffId}")
-    public HttpResponse checkHasAccount(@PathVariable int staffId) {
+    public HttpResponse<KeyCloakUserDto> checkHasAccount(@PathVariable int staffId) {
         var result = service.findAccountByStaffId(staffId);
         return HttpResponse.ok(result);
     }
+    
     
 }

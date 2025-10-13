@@ -96,6 +96,11 @@ public class StaffRestController {
         return HttpResponse.noContent();
     }
     
+    @GetMapping("/find-keycloak-user/{id}")
+    public String getKeycloakUserId(@PathVariable int id) {
+        return service.getKeycloakUserId(id);
+    }
+    
 
     @GetMapping("/status")
     public HttpResponse getStatusList() {

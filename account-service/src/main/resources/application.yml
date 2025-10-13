@@ -103,11 +103,3 @@ keycloak:
   client-id: admin-cli
   username: admin
   password: admin
-
-aws:
-  region: us-east-1
-  sqs:
-    endpoint: http://localhost:4566
-  creadentials:
-    access-key: test
-    secret-key: test
