@@ -1,0 +1,92 @@
+services:
+  # Infrastructure
+  otel-collector:
+      image: otel/opentelemetry-collector-contrib:0.137.0
+      container_name: otel-collector
+      command: ["--config=/etc/otel/config.yml"]
+      volumes:
+        - ./docker/otel-collector/config.yml:/etc/otel/config.yml
+      ports:
+        - "4317:4317"    # OTLP gRPC
+        - "4318:4318"    # OTLP HTTP
+        - "8889:8889"    # Collector Prometheus metrics endpoint
+      depends_on:
+        - tempo
+        - loki
+      networks:
+        - observability-network
+
+  prometheus:
+      image: prom/prometheus:v2.54.0
+      container_name: prometheus
+      ports:
+        - "9090:9090"
+      volumes:
+        - ./docker/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+        - prometheus_data:/prometheus
+      command:
+        - "--config.file=/etc/prometheus/prometheus.yml"
+        - "--storage.tsdb.path=/prometheus"
+      restart: always
+      networks:
+        - observability-network
+
+  loki:
+      image: grafana/loki:3.1.1
+      container_name: loki
+      command: ["-config.file=/etc/loki/local-config.yml"]
+      ports:
+        - "3100:3100"
+      volumes:
+        - ./docker/loki/config.yml:/etc/loki/local-config.yml
+        - loki_data:/loki
+      networks:
+        - observability-network
+
+  tempo:
+      image: grafana/tempo:2.7.0
+      container_name: tempo
+      ports:
+        - "3200:3200"   # Tempo HTTP API
+        #- "4317:4317"   # OTLP gRPC receiver
+        #- "4318:4318"   # OTLP HTTP receiver
+      volumes:
+        - ./docker/tempo/tempo.yml:/etc/tempo/config.yml
+        - tempo_data:/var/tempo
+      command: ["-config.file=/etc/tempo/config.yml"]
+      user: "0:0"
+      restart: always
+      networks:
+        - observability-network
+
+  grafana:
+      image: grafana/grafana:12.0.0
+      container_name: grafana
+      ports:
+        - "3000:3000"
+      environment:
+        #- GF_SECURITY_ADMIN_USER=admin
+        #- GF_SECURITY_ADMIN_PASSWORD=admin
+        #- GF_USERS_ALLOW_SIGN_UP=false
+        - GF_AUTH_ANONYMOUS_ENABLED=true
+        - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+        - GF_AUTH_DISABLE_LOGIN_FORM=true
+        - GF_USERS_DEFAULT_THEME=system
+      volumes:
+        - grafana_data:/var/lib/grafana
+        - ./docker/grafana/datasources.yml:/etc/grafana/provisioning/datasources/datasources.yml
+      depends_on:
+        #- prometheus
+        - loki
+        - tempo
+      networks:
+        - observability-network
+
+networks:
+  observability-network:
+    driver: bridge
+volumes:
+  loki_data:
+  grafana_data:
+  tempo_data:
+  prometheus_data:

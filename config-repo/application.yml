@@ -1,0 +1,98 @@
+otel:
+  traces:
+    exporter: logging
+  metrics:
+    exporter: logging
+  logs:
+    exporter: logging
+
+logging:
+  # pattern:
+  #   level: "trace_id=%mdc{trace_id} span_id=%mdc{span_id} trace_flags=%mdc{trace_flags} %p"
+  level:
+    root: INFO
+
+management:
+  tracing:
+    enabled: true
+  # otlp:
+  #   tracing:
+  #     endpoint: http://localhost:4318/v1/traces
+  # metrics:
+  #   tags: 
+  #     application: app
+  #   distribution:
+  #     percentiles-histogram:
+  #       http:
+  #         server:
+  #           requests: true
+  #         client:
+  #           requests: true
+  
+    # export:
+    #   url: http://localhost:4318/v1/metrics
+    #   step: 15s
+    #   prometheus:
+    #     enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  # endpoint:
+  #   prometheus:
+  #     enabled: true
+    health:
+      show-details: always
+    startup:
+        access: unrestricted
+
+
+spring:
+  data:
+    redis:
+      host: localhost
+      port: 6379
+  datasource:
+    url: jdbc:mysql://localhost:3306/staff_manager_db
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    database-platform: org.hibernate.dialect.MySQLDialect
+    properties:
+      hibernate:
+        format_sql: true
+
+  web:
+    resources:
+      add-mappings: false
+  output:
+    ansi:
+      enabled: ALWAYS
+
+  sql:
+    init:
+      mode: never
+
+  cloud:
+    aws:
+      region: 
+        static: us-east-1
+      sqs:
+        endpoint: http://localhost:4566
+      credentials:
+        access-key: test
+        secret-key: test
+
+keycloak:
+  server-url: http://localhost:8088/
+  hrmaz-realm: hrmaz-realm
+  master-realm: master
+  client-id: admin-cli
+  username: admin
+  password: admin

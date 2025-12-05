@@ -15,12 +15,11 @@
 	<modules>
 		<module>staff-service</module>
 		<module>department-service</module>
-		<module>config-service</module>
-		<module>discovery-serivce</module>
 		<module>gateway-serivce</module>
 		<module>attendance-service</module>
 		<module>account-service</module>
 		<module>authentication-service</module>
+		<module>config-service</module>
 	</modules>
 	<name>hrmaz</name>
 	<description>hrm multi services</description>
@@ -39,27 +38,58 @@
 	</scm>
 	<properties>
 		<java.version>21</java.version>
+		<opentelemetry-instrumentation.version>2.20.1</opentelemetry-instrumentation.version>
 	</properties>
 	<dependencies>
+		<dependency>
+			<groupId>io.opentelemetry.instrumentation</groupId>
+			<artifactId>opentelemetry-spring-boot-starter</artifactId>
+		</dependency>
+		<!-- <dependency>
+		  <groupId>io.opentelemetry</groupId>
+		  <artifactId>opentelemetry-extension-trace-propagators</artifactId>
+		</dependency> -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-consul-discovery</artifactId>
         </dependency>
 		<dependency>
-			<groupId>io.opentelemetry.instrumentation</groupId>
-			<artifactId>opentelemetry-spring-boot-starter</artifactId>
-			<version>2.15.0</version>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-config</artifactId>
+		</dependency>
+		<!-- Micrometer Prometheus (managed by Spring Boot BOM) -->
+		<!-- <dependency>
+			<groupId>io.micrometer</groupId>
+			<artifactId>micrometer-registry-prometheus</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.micrometer</groupId>
+			<artifactId>micrometer-tracing-bridge-otel</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>io.opentelemetry</groupId>
 			<artifactId>opentelemetry-exporter-otlp</artifactId>
-			<version>1.49.0</version>
+		</dependency> -->
+		<dependency>
+			<groupId>io.opentelemetry.instrumentation</groupId>
+			<artifactId>opentelemetry-logback-appender-1.0</artifactId>
+			<version>${opentelemetry-instrumentation.version}-alpha</version>
 		</dependency>
 		<dependency>
-			<groupId>io.opentelemetry</groupId>
-			<artifactId>opentelemetry-exporter-logging</artifactId>
-			<version>1.49.0</version>
+			<groupId>io.opentelemetry.instrumentation</groupId>
+			<artifactId>opentelemetry-logback-mdc-1.0</artifactId>
+			<version>${opentelemetry-instrumentation.version}-alpha</version>
 		</dependency>
+		<dependency>
+			<groupId>net.logstash.logback</groupId>
+			<artifactId>logstash-logback-encoder</artifactId>
+			<version>7.4</version>
+		</dependency>
+		<!-- OpenTelemetry API (version from imported opentelemetry-bom) -->
+		<!-- <dependency>
+			<groupId>io.opentelemetry</groupId>
+			<artifactId>opentelemetry-api</artifactId>
+		</dependency> -->
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -74,6 +104,13 @@
 	
 	<dependencyManagement>
 		<dependencies>
+		<dependency>
+            <groupId>io.opentelemetry.instrumentation</groupId>
+            <artifactId>opentelemetry-instrumentation-bom</artifactId>
+            <version>${opentelemetry-instrumentation.version}</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
 				<artifactId>spring-cloud-dependencies</artifactId>
@@ -81,6 +118,13 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+			<!-- <dependency>
+				<groupId>io.opentelemetry</groupId>
+				<artifactId>opentelemetry-bom</artifactId>
+				<version>${opentelemetry.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency> -->
 		</dependencies>
 	</dependencyManagement>
 

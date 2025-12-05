@@ -1,0 +1,58 @@
+
+spring:
+  cloud:
+    consul:
+      host: localhost
+      port: 8500
+      discovery:
+        # register: true
+        # enabled: true
+        health-check-path: /actuator/health
+        health-check-interval: 10s
+        health-check-url: http://host.docker.internal:8083/actuator/health
+        service-name: ${spring.application.name}
+        ip-address: localhost
+        prefer-ip-address: true
+
+    title: account micro service
+    version: 1.0
+    url:
+      front-end: http://localhost:4200
+    upload:
+      day-off-document:
+        max-size: 2_097_152  #2MB
+
+server:
+  port: 8083
+  error:
+    path: /error
+#  error:
+#    whitelabel:
+#      enabled: false
+
+logging:
+  level:
+    org:
+      # springframework:
+      #   orm: 
+      #     jpa: DEBUG
+      # hibernate: DEBUG
+        # orm:
+        #   jdbc:
+        #     bind: TRACE
+        # SQL: DEBUG
+    root: INFO
+
+# otel:
+#   exporter:
+#     otlp:
+#       endpoint: http://localhost:4318
+#   resource:
+#     attributes:
+#       service.name: attendance-service
+#   traces:
+#     exporter: otlp
+#   metrics:
+#     exporter: otlp
+#   logs:
+#     exporter: otlp

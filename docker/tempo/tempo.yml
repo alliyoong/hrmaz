@@ -1,0 +1,49 @@
+server:
+  http_listen_port: 3200
+  grpc_listen_port: 9095
+  log_level: info
+  log_format: logfmt
+
+distributor:
+  receivers:
+    otlp:
+      protocols:
+        # After tempo 2.7, receiver are default to localhost:4317 and localhost:4318 for security reasons.
+        # https://grafana.com/docs/tempo/latest/release-notes/v2-7/#opentelemetry-collector-receiver-listens-on-localhost-by-default 
+        grpc:
+          endpoint: "0.0.0.0:4317"
+        http:
+          endpoint: "0.0.0.0:4318"
+
+#storage:
+  #trace:
+    #backend: local
+    #wal:
+      #path: /tmp/tempo/wal
+    #local:
+      #path: /tmp/tempo/blocks
+
+ingester:
+  trace_idle_period: 10s
+  max_block_bytes: 1_000_000
+  max_block_duration: 5m
+  lifecycler:
+    ring:
+      kvstore:
+        store: inmemory
+      replication_factor: 1
+
+compactor:
+  compaction:
+    block_retention: 24h
+
+storage:
+  trace:
+    backend: local
+    local:
+      path: /var/tempo/traces
+    wal:
+      path: /var/tempo/wal
+    pool:
+      max_workers: 100
+      queue_depth: 1000

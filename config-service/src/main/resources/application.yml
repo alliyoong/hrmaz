@@ -1,0 +1,35 @@
+server:
+  port: 8888
+
+spring:
+  output:
+    ansi:
+      enabled: ALWAYS
+  application:
+    name: config-service
+  profiles:
+    active:
+    - native
+  cloud:
+    config:
+      server:
+        # git:
+        #   uri: https://github.com/hrmaz/config-service.git
+        #   default-label: main
+        #   clone-on-start: true
+        native:
+          search-locations:
+          - file:///D:/dev/hrmaz/hrmaz/config-repo
+
+    consul:
+      host: localhost
+      port: 8500
+      discovery:
+        # register: true
+        # enabled: true
+        health-check-path: /actuator/health
+        health-check-interval: 10s
+        health-check-url: http://host.docker.internal:8888/actuator/health
+        service-name: ${spring.application.name}
+        ip-address: localhost
+        prefer-ip-address: true

@@ -1,91 +1,87 @@
-server:
-  port: 8080
-
 spring:
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: http://localhost:8088/realms/hrmaz-realm
-          jwk-set-uri: http://localhost:8088/realms/hrmaz-realm/protocol/openid-connect/certs
-  data:
-    redis:
-      host: localhost
-      port: 6379
   application:
     name: gateway-service
-  output:
-    ansi:
-      enabled: ALWAYS
-  cloud:
-    consul:
-      host: localhost
-      port: 8500
-      discovery:
-        health-check-path: /actuator/health
-        ip-address: host.docker.internal
-        health-check-interval: 10s
-        prefer-ip-address: true
-        service-name: ${spring.application.name}
-    gateway:
-      default-filters:
-      - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
-      - name: RequestRateLimiter
-        args:
-          key-resolver: '#{@ipKeyResolver}'
-          redis-rate-limiter:
-            replenishRate: 2
-            burstCapacity: 10
-            requestedTokens: 1
-      globalcors:
-        corsConfigurations:
-          '[/**]':
-            allowedOriginPatterns: 'http://localhost:4200'
-            allowedMethods: 'GET, POST, PUT, DELETE, OPTIONS'
-            allowedHeaders: '*'
-            exposed-headers:
-            - Authorization
-            - Set-Cookie
-            allowCredentials: true
-      # server:
-        # webflux:
-      routes:
-        # - id: authentication-service
-        #   uri: lb://authentication-service
-        #   predicates:
-        #     - Host=auth.localhost:8080
-        #     - Path=/api/auth/**
-        #   filters:
-        #     - StripPrefix=2
-          # metadata:
-          #   cors:
-          #     allowedOriginPatterns: "http://localhost:4200"
-          #     allowedMethods: "GET, POST, PUT, DELETE, OPTIONS"
-          #     allowedHeaders: "*"
-          #     exposeHeaders: "Authorization, Set-Cookie"
-          #     allowCredentials: true
+  config:
+    import: "optional:configserver:http://localhost:8888"
+# server:
+#   port: 8080
 
-        # config route in yml file -> move to Route.java
-        #
-        # - id: staff-service
-        #   uri: lb://staff-service
-        #   predicates:
-        #     - Host=staff.localhost:8080
-        #     - Path=/api/staff/**
-        #   filters:
-        #     - StripPrefix=2
+# spring:
+#   security:
+#     oauth2:
+#       resourceserver:
+#         jwt:
+#           issuer-uri: http://localhost:8088/realms/hrmaz-realm
+#           jwk-set-uri: http://localhost:8088/realms/hrmaz-realm/protocol/openid-connect/certs
+#   data:
+#     redis:
+#       host: localhost
+#       port: 6379
+#   application:
+#     name: gateway-service
+#   output:
+#     ansi:
+#       enabled: ALWAYS
+#   cloud:
+#     gateway:
+#       default-filters:
+#       - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+#       - name: RequestRateLimiter
+#         args:
+#           key-resolver: '#{@ipKeyResolver}'
+#           redis-rate-limiter:
+#             replenishRate: 2
+#             burstCapacity: 10
+#             requestedTokens: 1
+#       globalcors:
+#         corsConfigurations:
+#           '[/**]':
+#             allowedOriginPatterns: 'http://localhost:4200'
+#             allowedMethods: 'GET, POST, PUT, DELETE, OPTIONS'
+#             allowedHeaders: '*'
+#             exposed-headers:
+#             - Authorization
+#             - Set-Cookie
+#             allowCredentials: true
+#       # server:
+#         # webflux:
+#       routes:
+#         # - id: authentication-service
+#         #   uri: lb://authentication-service
+#         #   predicates:
+#         #     - Host=auth.localhost:8080
+#         #     - Path=/api/auth/**
+#         #   filters:
+#         #     - StripPrefix=2
+#           # metadata:
+#           #   cors:
+#           #     allowedOriginPatterns: "http://localhost:4200"
+#           #     allowedMethods: "GET, POST, PUT, DELETE, OPTIONS"
+#           #     allowedHeaders: "*"
+#           #     exposeHeaders: "Authorization, Set-Cookie"
+#           #     allowCredentials: true
+
+#         # config route in yml file -> move to Route.java
+#         #
+#         # - id: staff-service
+#         #   uri: lb://staff-service
+#         #   predicates:
+#         #     - Host=staff.localhost:8080
+#         #     - Path=/api/staff/**
+#         #   filters:
+#         #     - StripPrefix=2
 
 
-logging:
-  level:
-    org: 
-      springframework:
-        cloud:
-          gateway: INFO
+# logging:
+#   level:
+#     org: 
+#       springframework:
+#         cloud:
+#           gateway: INFO
 
-security:
-  jwt:
-    secret: Ns6SpnvuJgwRCli/WbFpCIPhBkhjBTYxE4VORK/dxRQ=
-    access-token-lifetime-milliseconds: 300_000
-    issuer: hrm-system
-    audience: hrm-audience
+# security:
+#   jwt:
+#     secret: Ns6SpnvuJgwRCli/WbFpCIPhBkhjBTYxE4VORK/dxRQ=
+#     access-token-lifetime-milliseconds: 300_000
+#     issuer: hrm-system
+#     audience: hrm-audience

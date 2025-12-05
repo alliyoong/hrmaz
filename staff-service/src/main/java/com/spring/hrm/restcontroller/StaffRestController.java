@@ -2,6 +2,7 @@ package com.spring.hrm.restcontroller;
 
 import java.util.List;
 
+import org.jboss.logging.MDC;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,8 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.spring.hrm.entity.Staff;
@@ -20,6 +19,8 @@ import com.spring.hrm.entity.dto.StaffAddRequestDto;
 import com.spring.hrm.service.StaffService;
 import com.spring.hrm.utilities.HttpResponse;
 
+import io.opentelemetry.api.trace.Span;
+import io.opentelemetry.api.trace.SpanContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -119,4 +120,18 @@ public class StaffRestController {
         var result = service.getJobPositionList();
         return HttpResponse.ok(result);
     }
+    
+    @GetMapping("/test")
+    public String test() {
+        Span span = Span.current();
+        SpanContext ctx = span.getSpanContext();
+        log.info("traceId = {}", ctx.getTraceId());
+        log.info("spanId = {}", ctx.getSpanId());
+        log.info("traceFlags = {}", ctx.getTraceFlags());
+        log.info("MDC.traceId = {}", MDC.get("traceId"));
+        log.info("MDC.spanId = {}", MDC.get("spanId"));
+        
+        return "ok";
+    }
+    
 }

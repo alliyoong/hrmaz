@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!-- 1. Spring property: read service name                     -->
+    <!-- <springProperty scope="context" name="APP_NAME" source="spring.application.name" defaultValue="unknown-service"/> -->
+    <!-- 2. Define log pattern (with OpenTelemetry context)         -->
+    <!-- <property name="LOG_PATTERN" -->
+              <!-- value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%highlight(%-5level)] [%thread] %cyan(${APP_NAME}) %magenta(%logger{36}) - %msg %n%cyan(trace_id=%X{trace_id} span_id=%X{span_id})%n"/> -->
+
+    <!-- <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>
+                ${LOG_PATTERN}
+            </pattern>
+        </encoder>
+    </appender>
+    <appender name="OTLP"
+        class="io.opentelemetry.instrumentation.logback.appender.v1_0.OpenTelemetryAppender">
+        <endpoint>http://localhost:4317</endpoint>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger{36} - %msg%n</pattern>
+        </layout>
+        <captureExperimentalAttributes>false</captureExperimentalAttributes>
+        <captureCodeAttributes>true</captureCodeAttributes>
+        <captureMarkerAttribute>true</captureMarkerAttribute>
+        <captureKeyValuePairAttributes>true</captureKeyValuePairAttributes>
+        <captureLoggerContext>true</captureLoggerContext>
+        <captureMdcAttributes>*</captureMdcAttributes>
+    </appender>
+    <root level="INFO">
+        <appender-ref ref="console"/> -->
+        <!-- <appender-ref ref="OTLP"/> -->
+    <!-- </root> -->
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+
+    <springProperty scope="context" name="springAppName" source="spring.application.name"/>
+
+    <!-- Console output -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>
+            <!-- %d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n -->
+            %magenta(%d{yyyy-MM-dd HH:mm:ss}) %blue([%thread]) **%highlight(%-5level)** %cyan(%logger{36}) - %msg%n
+            </pattern>
+        </encoder>
+    </appender>
+
+    <!-- Send logs to Logstash -->
+    <appender name="LOGSTASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+        <destination>localhost:5000</destination>
+        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <timestamp />
+                <pattern>
+                    <pattern>
+                        {
+                          "app": "${springAppName}",
+                          "level": "%level",
+                          "thread": "%thread",
+                          "logger": "%logger",
+                          "message": "%message",
+                          <!-- "trace": "%X{traceId:-}", -->
+                          <!-- "span": "%X{spanId:-}", -->
+                          "exception": "%ex"
+                        }
+                    </pattern>
+                </pattern>
+                <mdc />
+            </providers>
+        </encoder>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="LOGSTASH"/>
+    </root>
+</configuration>

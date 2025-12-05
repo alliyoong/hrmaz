@@ -1,0 +1,106 @@
+spring:
+  cloud:
+    consul:
+      host: localhost
+      port: 8500
+      discovery:
+        # register: true
+        # enabled: true
+        health-check-path: /actuator/health
+        health-check-interval: 10s
+        health-check-url: http://host.docker.internal:8081/actuator/health
+        service-name: ${spring.application.name}
+        ip-address: localhost
+        prefer-ip-address: true
+
+    title: staff micro service
+    version: 1.0
+    url:
+      front-end: http://localhost:4200
+    upload:
+      day-off-document:
+        max-size: 2_097_152  #2MB
+
+server:
+  port: 8081
+  error:
+    path: /error
+#  error:
+#    whitelabel:
+#      enabled: false
+
+logging:
+  level:
+    org:
+      # springframework:
+      #   orm: 
+      #     jpa: DEBUG
+      # hibernate: DEBUG
+        # orm:
+        #   jdbc:
+        #     bind: TRACE
+        # SQL: DEBUG
+    root: INFO
+
+# OpenTelemetry config
+# otel:
+#   service:
+#     name: staff-service
+#   exporter:
+#     otlp:
+#       endpoint: http://localhost:4318   # OTEL Collector endpoint (HTTP)
+#       protocol: http/protobuf
+#   metrics:
+#     exporter: otlp
+#   traces:
+#     exporter: otlp
+#   logs:
+#     exporter: none
+
+# management:
+#   otlp:
+#     tracing:
+#       endpoint: "http://localhost:4318/v1/traces"
+#     metrics:
+#       export:
+#         url: "http://localhost:4318/v1/metrics"
+#         step: 15s
+
+
+
+# otel:
+#   exporter:
+#     otlp:
+#       endpoint: http://localhost:4318
+#       # protocol: http/protobuf
+#   propagators:
+#     - tracecontext
+#     - baggage
+#   resource:
+#     attributes:
+#       deployment.environment: dev
+#       service.name: staff-service
+#       service.namespace: hrm
+#   traces:
+#     sampler: always_on
+#     exporter: otlp
+#   metrics:
+#     exporter: otlp
+#   logs:
+#     exporter: otlp
+#   instrumentation:
+#     logging:
+#       mdc:
+#         injection: true
+
+#   tracing:
+#     sampling:
+#       probability: 1.0
+
+otel:
+  logs:
+    bridge:
+      enabled: true
+  instrumentation:
+    logback-mdc:
+      enabled: true
